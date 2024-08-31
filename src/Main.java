@@ -9,9 +9,9 @@ public class Main {
 
         FlightService flightService = new FlightService(flightDao);
 
-        flightService.registerFlight("JetAir", "DEL", "BLR", 5000, "02:50", true, true);
+        flightService.registerFlight("JetAir", "DEL", "BLR", 1000, "02:50", true, true);
         flightService.registerFlight("Indigo", "DEL", "PNQ", 2000, "01:50", true, true);
-        flightService.registerFlight("JetAir", "BLR", "PNQ", 1000, "00:50", true, true);
+        flightService.registerFlight("JetAir", "BLR", "PNQ", 5000, "00:50", true, true);
 
         flightService.filter("MINIMUM_HOPS", "DEL", "PNQ");
         flightService.filter("CHEAPEST", "DEL", "PNQ");

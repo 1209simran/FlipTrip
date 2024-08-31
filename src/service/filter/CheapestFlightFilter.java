@@ -32,7 +32,7 @@ public class CheapestFlightFilter implements IFilter {
             if (fl.getDestCity().equalsIgnoreCase(dest)) {
                 pathWithCost.put(flCode, pathWithCost.getOrDefault(flCode, fl.getPrice()));
                 resFlights.add(fl);
-                break;
+//                break;
             }
             int srcPrice = fl.getPrice();
             List<Flight> srcFlights = getSourceFlight(flights, fl.getDestCity());
@@ -52,13 +52,25 @@ public class CheapestFlightFilter implements IFilter {
             });
 
         }
-
-        resFlights.forEach(res -> {
-            System.out.println("Found flight from " +
-                    source + " -> " + dest + " with " + pathWithCost.get(res.getSourceCity().toUpperCase()
-                    + res.getDestCity().toUpperCase()) + " price");
-        });
+        Flight resFlight = minPriceFlight(resFlights);
+        System.out.println("Found flight from " +
+                source + " -> " + dest + " with " + pathWithCost.get(resFlight.getSourceCity().toUpperCase()
+                + resFlight.getDestCity().toUpperCase()) + " price");
         return resFlights;
+
+    }
+
+    private Flight minPriceFlight(List<Flight> resFlights) {
+        int minPrice = Integer.MAX_VALUE;
+        Flight res = null;
+        for (Flight flight : resFlights) {
+            if (minPrice > pathWithCost.get(flight.getSourceCity().toUpperCase() + flight.getDestCity().toUpperCase())) {
+                minPrice = pathWithCost.get(flight.getSourceCity().toUpperCase()
+                        + flight.getDestCity().toUpperCase());
+                res = flight;
+            }
+        }
+        return res;
     }
 
     private List<Flight> getSourceFlight(List<Flight> flights, String src) {

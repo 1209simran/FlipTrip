@@ -50,14 +50,14 @@ public class FlightDao {
         return flights;
     }
 
-    public List<List<Flight>> findFlightsBetweenToandFrom(String src, String dest) {
+    public List<List<Flight>> findFlightsBetweenToandFrom(String src, String dest, List<Flight> flightList) {
         List<List<Flight>> flightsBetween = new ArrayList<>();
-        List<Flight> srcFlights = getSourceFlight(flights, src);
+        List<Flight> srcFlights = getSourceFlight(flightList, src);
         Set<String> visited = new HashSet<>();
         srcFlights.forEach(flight -> {
             List<Flight> srcFls = new ArrayList<>();
             srcFls.add(flight);
-            findFlightsBetweenToandFrom(flight.getFlightId(), flight.getDestCity(), dest, visited, flight, flightsBetween, srcFls);
+            findFlightsBetweenToandFrom(flight.getFlightId(), flight.getSourceCity(), dest, visited, flight, flightsBetween, srcFls);
         });
         return flightsBetween;
     }
@@ -68,11 +68,11 @@ public class FlightDao {
             return;
         }
         visited.add(flightId);
-        List<Flight> destFlights = getSourceFlight(flights, src);
+        List<Flight> destFlights = getSourceFlight(flights, flight.getDestCity());
         destFlights.forEach(destFlight -> {
-            if (!visited.contains(destFlight.getFlightId())) {
+            if (!visited.contains(destFlight.getFlightId()) && !destFlight.getDestCity().equalsIgnoreCase(src)) {
                 flightsBetween.add(destFlight);
-                findFlightsBetweenToandFrom(flightId, destFlight.getDestCity(), dest, visited, destFlight, flightsBetweenList, flightsBetween);
+                findFlightsBetweenToandFrom(flightId, src, dest, visited, destFlight, flightsBetweenList, flightsBetween);
             }
 
         });

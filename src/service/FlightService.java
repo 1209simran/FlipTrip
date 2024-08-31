@@ -30,7 +30,7 @@ public class FlightService {
         System.out.println(airlineName + " " + sourceCity + " -> " + destCity + " flight registered.");
     }
 
-    public void filter(String airlineName, Boolean isMealAvailable) {
+    public void filterWithAirlineName(String airlineName, String src, String dest) {
         Map<String, List<Flight>> flightsByAirline = flightDao.getAllFlights();
         List<Flight> flightList = new ArrayList<>();
         if (airlineName != null) {
@@ -40,25 +40,25 @@ public class FlightService {
             }
             flightList.addAll(flightsByAirline.get(airlineName));
         }
-        if (isMealAvailable != null) {
-            if (flightList.isEmpty()) {
-                for (Map.Entry<String, List<Flight>> entry : flightsByAirline.entrySet()) {
-                    entry.getValue().forEach(flight -> {
-                        if (flight.isMealAvailable() & isMealAvailable) {
-                            System.out.println("Found flight for airline " + entry.getKey() + " " +
-                                    flight.getSourceCity() + " -> " + flight.getDestCity());
-                        }
-                    });
-                }
-                return;
-            } else {
-                flightList = flightList.stream().filter(flight -> flight.isMealAvailable() & isMealAvailable).toList();
-            }
-        }
-        flightList.forEach(flight -> {
-            System.out.println("Found flight for airline " + airlineName + " " +
-                    flight.getSourceCity() + " -> " + flight.getDestCity());
+
+        List<List<Flight>> flights = flightDao.findFlightsBetweenToandFrom(src, dest, flightList);
+        flights.forEach(fl -> {
+            showFlights(fl, src, dest);
         });
+    }
+
+    private void showFlights(List<Flight> resFlight, String source, String dest) {
+        if (resFlight != null && !resFlight.isEmpty()) {
+            int totalPriceOfTrip = 0;
+            for (Flight fl : resFlight)
+                totalPriceOfTrip += fl.getPrice();
+            System.out.println("Found flight from " + source + " -> " + dest + " with price " + totalPriceOfTrip + " and " + (resFlight.size() - 1) + " hops");
+            resFlight.forEach(flight -> {
+                System.out.println(flight.getSourceCity() + " -> " + flight.getDestCity() + ", price: " + flight.getPrice());
+            });
+        } else {
+            System.out.println("No flight found from " + source + " to " + dest);
+        }
 
     }
 
@@ -67,12 +67,15 @@ public class FlightService {
             System.out.println("Error:- Source and Destination city cannot be same.");
             return;
         }
+        List<List<Flight>> flights = new ArrayList<>();
         if (filterType.CHEAPEST.toString().equalsIgnoreCase(filterName)) {
-            cheapestFlightFilter.filter(source, dest);
+            flights = cheapestFlightFilter.filter(source, dest);
         } else if (filterType.MINIMUM_HOPS.toString().equalsIgnoreCase(filterName)) {
-            hopsFilter.filter(source, dest);
+            flights = hopsFilter.filter(source, dest);
         }
-
+        flights.forEach(fl -> {
+            showFlights(fl, source, dest);
+        });
     }
 
 

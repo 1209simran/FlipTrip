@@ -1,6 +1,10 @@
 package service;
 
+import model.Flight;
+
+import java.util.List;
+
 public interface IFilter {
 
-    void filter(String source, String dest);
+    List<List<Flight>> filter(String source, String dest);
 }

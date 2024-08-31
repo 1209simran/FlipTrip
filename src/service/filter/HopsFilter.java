@@ -4,6 +4,7 @@ import dao.FlightDao;
 import model.Flight;
 import service.IFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HopsFilter implements IFilter {
@@ -17,13 +18,14 @@ public class HopsFilter implements IFilter {
 
     //dfs
     @Override
-    public void filter(String source, String dest) {
-        List<List<Flight>> flights = flightDao.findFlightsBetweenToandFrom(source, dest);
-        minHopFlight(flights, source, dest);
+    public List<List<Flight>> filter(String source, String dest) {
+        List<List<Flight>> flights = flightDao.findFlightsBetweenToandFrom(source, dest, flightDao.getFlights());
+        return minHopFlight(flights, source, dest);
     }
 
-    private void minHopFlight(List<List<Flight>> flights, String source, String dest) {
+    private List<List<Flight>> minHopFlight(List<List<Flight>> flights, String source, String dest) {
         List<Flight> resFlight = null;
+        List<List<Flight>> finalFlightList = new ArrayList<>();
         int minPrice = Integer.MAX_VALUE;
         int minHop = Integer.MAX_VALUE;
         for (List<Flight> flightList : flights) {
@@ -39,19 +41,9 @@ public class HopsFilter implements IFilter {
                 resFlight = flightList;
             }
         }
-        showFlights(resFlight, source, dest, minPrice, minHop - 1);
-    }
-
-    private void showFlights(List<Flight> resFlight, String source, String dest, int price, int hops) {
-        if (resFlight != null) {
-            System.out.println("Found flight from " +
-                    source + " -> " + dest + " with " + price + " price and " + hops + " hops");
-            resFlight.forEach(flight -> {
-                System.out.println(flight.getSourceCity() + " -> " + flight.getDestCity());
-            });
-        } else {
-            System.out.println("No flight found from " + source + " to " + dest);
-        }
+        if (resFlight != null)
+            finalFlightList.add(resFlight);
+        return finalFlightList;
     }
 
 }

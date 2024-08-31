@@ -43,7 +43,7 @@ public class FlightService {
                 for (Map.Entry<String, List<Flight>> entry : flightsByAirline.entrySet()) {
                     entry.getValue().forEach(flight -> {
                         if (flight.isMealAvailable() & isMealAvailable) {
-                            System.out.println("Found flight " + entry.getKey() + " " +
+                            System.out.println("Found flight for airline " + entry.getKey() + " " +
                                     flight.getSourceCity() + " -> " + flight.getDestCity());
                         }
                     });
@@ -54,22 +54,17 @@ public class FlightService {
             }
         }
         flightList.forEach(flight -> {
-            System.out.println("Found flight " + airlineName + " " +
+            System.out.println("Found flight for airline " + airlineName + " " +
                     flight.getSourceCity() + " -> " + flight.getDestCity());
         });
 
     }
 
     public void filter(String filterName, String source, String dest) {
-        List<Flight> flightList = new ArrayList<>();
         if (filterType.CHEAPEST.toString().equalsIgnoreCase(filterName)) {
-            flightList = cheapestFlightFilter.filter(source, dest);
+            cheapestFlightFilter.filter(source, dest);
         } else if (filterType.MINIMUM_HOPS.toString().equalsIgnoreCase(filterName)) {
-            flightList = hopsFilter.filter(source, dest);
-        }
-        if (flightList.isEmpty()) {
-            System.out.println("No flights found from " + source + " -> " + dest);
-            return;
+            hopsFilter.filter(source, dest);
         }
 //        flightList.forEach(flight -> {
 //            System.out.println("Found flight from " +

@@ -32,7 +32,6 @@ public class CheapestFlightFilter implements IFilter {
             if (fl.getDestCity().equalsIgnoreCase(dest)) {
                 pathWithCost.put(flCode, pathWithCost.getOrDefault(flCode, fl.getPrice()));
                 resFlights.add(fl);
-//                break;
             }
             int srcPrice = fl.getPrice();
             List<Flight> srcFlights = getSourceFlight(flights, fl.getDestCity());

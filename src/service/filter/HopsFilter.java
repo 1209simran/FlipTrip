@@ -20,10 +20,47 @@ public class HopsFilter implements IFilter {
         this.pathWithCost = new HashMap<>();
     }
 
+    @Override
     public void filter(String source, String dest) {
-
         List<List<Flight>> flights = flightDao.findFlightsBetweenToandFrom(source, dest);
         minHopFlight(flights, source, dest);
+    }
+
+    private void minHopFlight(List<List<Flight>> flights, String source, String dest) {
+        List<Flight> resFlight = null;
+        int minPrice = Integer.MAX_VALUE;
+        int minHop = Integer.MAX_VALUE;
+        for (List<Flight> flightList : flights) {
+            if (minHop > flightList.size())
+                minHop = flightList.size();
+        }
+        for (List<Flight> flightList : flights) {
+            int totalPriceOfTrip = 0;
+            for (Flight fl : flightList)
+                totalPriceOfTrip += fl.getPrice();
+            if (minPrice > totalPriceOfTrip && minHop == flightList.size()) {
+                minPrice = totalPriceOfTrip;
+                resFlight = flightList;
+            }
+        }
+        showFlights(resFlight, source, dest, minPrice, minHop - 1);
+    }
+
+    private void showFlights(List<Flight> resFlight, String source, String dest, int price, int hops) {
+        if (resFlight != null) {
+            System.out.println("Found flight from " +
+                    source + " -> " + dest + " with " + price + " price and " + hops + " hops");
+            resFlight.forEach(flight -> {
+                System.out.println(flight.getSourceCity() + " -> " + flight.getDestCity());
+            });
+        } else {
+            System.out.println("No flight found from " + source + " to " + dest);
+        }
+    }
+
+
+//    @Override
+//    public void filter(String source, String dest) {
 //        List<Flight> resFlights = new ArrayList<>();
 //        List<Flight> flights = flightDao.getFlights();
 //        Queue<Flight> flightQueue = new LinkedList<>();
@@ -64,40 +101,7 @@ public class HopsFilter implements IFilter {
 //        }
 //        Flight resFlight = minHopFlight(resFlights);
 //        showFlights(resFlight, source, dest);
-    }
-
-    private void minHopFlight(List<List<Flight>> flights, String source, String dest) {
-        List<Flight> resFlight = null;
-        int minPrice = Integer.MAX_VALUE;
-        int minHop = Integer.MAX_VALUE;
-        for (List<Flight> flightList : flights) {
-            if (minHop > flightList.size())
-                minHop = flightList.size();
-        }
-        for (List<Flight> flightList : flights) {
-            int totalPriceOfTrip = 0;
-            for (Flight fl : flightList)
-                totalPriceOfTrip += fl.getPrice();
-            if (minPrice > totalPriceOfTrip && minHop == flightList.size()) {
-                minPrice = totalPriceOfTrip;
-                resFlight = flightList;
-            }
-        }
-        showFlights(resFlight, source, dest, minPrice, minHop - 1);
-    }
-
-    private void showFlights(List<Flight> resFlight, String source, String dest, int price, int hops) {
-        if (resFlight != null) {
-            System.out.println("Found flight from " +
-                    source + " -> " + dest + " with " + price + " price and " + hops + " hops");
-            resFlight.forEach(flight -> {
-                System.out.println(flight.getSourceCity() + " -> " + flight.getDestCity());
-            });
-        } else {
-            System.out.println("No flight found from " + source + " to " + dest);
-        }
-    }
-
+//    }
 
 //    private void showFlights(Flight resFlight, String source, String dest) {
 //        System.out.println("Found flight from " +

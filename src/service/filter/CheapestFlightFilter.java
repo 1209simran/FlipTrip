@@ -25,42 +25,6 @@ public class CheapestFlightFilter implements IFilter {
     public void filter(String source, String dest) {
         List<List<Flight>> flights = flightDao.findFlightsBetweenToandFrom(source, dest);
         minPriceFlight(flights, source, dest);
-//        List<Flight> resFlights = new ArrayList<>();
-//        List<Flight> flights = flightDao.getFlights();
-//        Queue<Flight> flightQueue = new LinkedList<>();
-//        List<Flight> flight = getSourceFlight(flights, source);
-//        flightQueue.addAll(flight);
-//        Set<String> visited = new HashSet<>();
-//        while (!flightQueue.isEmpty()) {
-//            Flight fl = flightQueue.poll();
-//            String flCode = fl.getAirlineName().toUpperCase() + fl.getSourceCity().toUpperCase()
-//                    + fl.getDestCity().toUpperCase();
-//            if (fl.getDestCity().equalsIgnoreCase(dest)) {
-//                pathWithCost.put(flCode, pathWithCost.getOrDefault(flCode, fl.getPrice()));
-//                pathWithMinHops.put(flCode, pathWithMinHops.getOrDefault(flCode, 0));
-//                resFlights.add(fl);
-//            }
-//            int srcPrice = fl.getPrice();
-//            List<Flight> srcFlights = getSourceFlight(flights, fl.getDestCity());
-//
-//            srcFlights.forEach(srcFlight -> {
-//                int price = srcPrice + srcFlight.getPrice();
-//                String newFlightCode = srcFlight.getAirlineName().toUpperCase() + srcFlight.getSourceCity().toUpperCase()
-//                        + srcFlight.getDestCity().toUpperCase();
-//                if (!visited.contains(newFlightCode)) {
-//                    if (pathWithCost.getOrDefault(newFlightCode, Integer.MAX_VALUE) >
-//                            pathWithCost.getOrDefault(newFlightCode, 0) + price) {
-//                        visited.add(newFlightCode);
-//                        flightQueue.add(srcFlight);
-//                        pathWithCost.put(newFlightCode, pathWithCost.getOrDefault(newFlightCode, 0) + price);
-//                        pathWithMinHops.put(newFlightCode, pathWithMinHops.getOrDefault(newFlightCode, 0) + 1);
-//                    }
-//                }
-//            });
-//
-//        }
-//        Flight resFlight = minPriceFlight(resFlights);
-//        showFlights(resFlight, source, dest);
     }
 
     private void minPriceFlight(List<List<Flight>> flights, String source, String dest) {
@@ -98,6 +62,46 @@ public class CheapestFlightFilter implements IFilter {
         }
 
     }
+
+//    @Override
+//    public void filter(String source, String dest) {
+//        List<Flight> resFlights = new ArrayList<>();
+//        List<Flight> flights = flightDao.getFlights();
+//        Queue<Flight> flightQueue = new LinkedList<>();
+//        List<Flight> flight = getSourceFlight(flights, source);
+//        flightQueue.addAll(flight);
+//        Set<String> visited = new HashSet<>();
+//        while (!flightQueue.isEmpty()) {
+//            Flight fl = flightQueue.poll();
+//            String flCode = fl.getAirlineName().toUpperCase() + fl.getSourceCity().toUpperCase()
+//                    + fl.getDestCity().toUpperCase();
+//            if (fl.getDestCity().equalsIgnoreCase(dest)) {
+//                pathWithCost.put(flCode, pathWithCost.getOrDefault(flCode, fl.getPrice()));
+//                pathWithMinHops.put(flCode, pathWithMinHops.getOrDefault(flCode, 0));
+//                resFlights.add(fl);
+//            }
+//            int srcPrice = fl.getPrice();
+//            List<Flight> srcFlights = getSourceFlight(flights, fl.getDestCity());
+//
+//            srcFlights.forEach(srcFlight -> {
+//                int price = srcPrice + srcFlight.getPrice();
+//                String newFlightCode = srcFlight.getAirlineName().toUpperCase() + srcFlight.getSourceCity().toUpperCase()
+//                        + srcFlight.getDestCity().toUpperCase();
+//                if (!visited.contains(newFlightCode)) {
+//                    if (pathWithCost.getOrDefault(newFlightCode, Integer.MAX_VALUE) >
+//                            pathWithCost.getOrDefault(newFlightCode, 0) + price) {
+//                        visited.add(newFlightCode);
+//                        flightQueue.add(srcFlight);
+//                        pathWithCost.put(newFlightCode, pathWithCost.getOrDefault(newFlightCode, 0) + price);
+//                        pathWithMinHops.put(newFlightCode, pathWithMinHops.getOrDefault(newFlightCode, 0) + 1);
+//                    }
+//                }
+//            });
+//
+//        }
+//        Flight resFlight = minPriceFlight(resFlights);
+//        showFlights(resFlight, source, dest);
+//    }
 
 //    private void showFlights(Flight resFlight, String source, String dest) {
 //        System.out.println("Found flight from " +

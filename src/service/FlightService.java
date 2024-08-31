@@ -63,15 +63,16 @@ public class FlightService {
     }
 
     public void filter(String filterName, String source, String dest) {
+        if (source.equalsIgnoreCase(dest)) {
+            System.out.println("Error:- Source and Destination city cannot be same.");
+            return;
+        }
         if (filterType.CHEAPEST.toString().equalsIgnoreCase(filterName)) {
             cheapestFlightFilter.filter(source, dest);
         } else if (filterType.MINIMUM_HOPS.toString().equalsIgnoreCase(filterName)) {
             hopsFilter.filter(source, dest);
         }
-//        flightList.forEach(flight -> {
-//            System.out.println("Found flight from " +
-//                    source + " -> " + dest);
-//        });
+
     }
 
 

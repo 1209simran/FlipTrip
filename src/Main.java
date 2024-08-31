@@ -13,13 +13,14 @@ public class Main {
         flightService.registerFlight("Indigo", "DEL", "PNQ", 7000, "01:50", true, true);
         flightService.registerFlight("JetAir", "BLR", "PNQ", 5000, "00:50", true, true);
         flightService.registerFlight("AirIndia", "DEL", "PNQ", 10000, "01:50", true, true);
+        flightService.registerFlight("AirIndia", "BLR", "DEL", 10000, "01:50", true, true);
 
 
-        flightService.filter("MINIMUM_HOPS", "DEL", "PNQ");
-        flightService.filter("CHEAPEST", "DEL", "PNQ");
+        flightService.filter("MINIMUM_HOPS", "DEL", "DEL");
+        flightService.filter("CHEAPEST", "DEL", "DEL");
 
         flightService.filter("JetAir", true);
-        
+
 
     }
 }

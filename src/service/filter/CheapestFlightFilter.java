@@ -27,11 +27,10 @@ public class CheapestFlightFilter implements IFilter {
         Set<String> visited = new HashSet<>();
         while (!flightQueue.isEmpty()) {
             Flight fl = flightQueue.poll();
+            String flCode = fl.getSourceCity().toUpperCase()
+                    + fl.getDestCity().toUpperCase();
             if (fl.getDestCity().equalsIgnoreCase(dest)) {
-                pathWithCost.put(fl.getSourceCity().toUpperCase()
-                                + fl.getDestCity().toUpperCase(),
-                        pathWithCost.getOrDefault(fl.getSourceCity().toUpperCase()
-                                + fl.getDestCity().toUpperCase(), fl.getPrice()));
+                pathWithCost.put(flCode, pathWithCost.getOrDefault(flCode, fl.getPrice()));
                 resFlights.add(fl);
                 break;
             }

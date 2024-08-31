@@ -33,11 +33,10 @@ public class HopsFilter implements IFilter {
         Set<String> visited = new HashSet<>();
         while (!flightQueue.isEmpty()) {
             Flight fl = flightQueue.poll();
+            String flCode = fl.getSourceCity().toUpperCase()
+                    + fl.getDestCity().toUpperCase();
             if (fl.getDestCity().equalsIgnoreCase(dest)) {
-                pathWithMinHops.put(fl.getSourceCity().toUpperCase()
-                                + fl.getDestCity().toUpperCase(),
-                        pathWithMinHops.getOrDefault(fl.getSourceCity().toUpperCase()
-                                + fl.getDestCity().toUpperCase(), 0));
+                pathWithMinHops.put(flCode, pathWithMinHops.getOrDefault(flCode, 0));
                 resFlights.add(fl);
                 break;
             }

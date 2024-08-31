@@ -93,6 +93,8 @@ public class CheapestFlightFilter implements IFilter {
             resFlight.forEach(flight -> {
                 System.out.println(flight.getSourceCity() + " -> " + flight.getDestCity());
             });
+        } else {
+            System.out.println("No flight found from " + source + " to " + dest);
         }
 
     }

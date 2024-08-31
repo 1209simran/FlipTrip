@@ -2,10 +2,7 @@ package dao;
 
 import model.Flight;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class FlightDao {
 
@@ -34,7 +31,7 @@ public class FlightDao {
             flightList = flightsByAirline.get(flight.getAirlineName());
         flightList.add(flight);
         flightsByAirline.put(flight.getAirlineName(), flightList);
-        
+
     }
 
     public List<Flight> getFlightByAirline(String airlineName) {
@@ -51,5 +48,43 @@ public class FlightDao {
 
     public List<Flight> getFlights() {
         return flights;
+    }
+
+    public List<List<Flight>> findFlightsBetweenToandFrom(String src, String dest) {
+        List<List<Flight>> flightsBetween = new ArrayList<>();
+        List<Flight> srcFlights = getSourceFlight(flights, src);
+        Set<String> visited = new HashSet<>();
+        srcFlights.forEach(flight -> {
+            List<Flight> srcFls = new ArrayList<>();
+            srcFls.add(flight);
+            findFlightsBetweenToandFrom(flight.getFlightId(), flight.getDestCity(), dest, visited, flight, flightsBetween, srcFls);
+        });
+        return flightsBetween;
+    }
+
+    private void findFlightsBetweenToandFrom(String flightId, String src, String dest, Set<String> visited, Flight flight, List<List<Flight>> flightsBetweenList, List<Flight> flightsBetween) {
+        if (flight.getDestCity().equalsIgnoreCase(dest)) {
+            flightsBetweenList.add(flightsBetween);
+            return;
+        }
+        visited.add(flightId);
+        List<Flight> destFlights = getSourceFlight(flights, src);
+        destFlights.forEach(destFlight -> {
+            if (!visited.contains(destFlight.getFlightId())) {
+                flightsBetween.add(destFlight);
+                findFlightsBetweenToandFrom(flightId, destFlight.getDestCity(), dest, visited, destFlight, flightsBetweenList, flightsBetween);
+            }
+
+        });
+
+    }
+
+    private List<Flight> getSourceFlight(List<Flight> flights, String src) {
+        List<Flight> flightList = new ArrayList<>();
+        flights.forEach(flight -> {
+            if (flight.getSourceCity().equalsIgnoreCase(src))
+                flightList.add(flight);
+        });
+        return flightList;
     }
 }

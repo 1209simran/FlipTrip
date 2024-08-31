@@ -2,6 +2,7 @@ package model;
 
 public class Flight {
 
+    private String flightId;
     private String airlineName;
     private String sourceCity;
     private String destCity;
@@ -10,7 +11,7 @@ public class Flight {
     private boolean isMealAvailable;
     private boolean isExcessBaggageAvailable;
 
-    public Flight(String airlineName, String sourceCity, String destCity, int price, String flightDuration, boolean isMealAvailable, boolean isExcessBaggageAvailable) {
+    public Flight(String flightId, String airlineName, String sourceCity, String destCity, int price, String flightDuration, boolean isMealAvailable, boolean isExcessBaggageAvailable) {
         this.airlineName = airlineName;
         this.sourceCity = sourceCity;
         this.destCity = destCity;
@@ -18,8 +19,16 @@ public class Flight {
         this.flightDuration = flightDuration;
         this.isMealAvailable = isMealAvailable;
         this.isExcessBaggageAvailable = isExcessBaggageAvailable;
+        this.flightId = flightId;
     }
 
+    public String getFlightId() {
+        return flightId;
+    }
+
+    public void setFlightId(String flightId) {
+        this.flightId = flightId;
+    }
 
     public boolean isMealAvailable() {
         return isMealAvailable;

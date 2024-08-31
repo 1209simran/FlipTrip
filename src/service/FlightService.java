@@ -9,6 +9,7 @@ import service.filter.HopsFilter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class FlightService {
 
@@ -23,7 +24,8 @@ public class FlightService {
     }
 
     public void registerFlight(String airlineName, String sourceCity, String destCity, int price, String flightDuration, boolean isMealAvailable, boolean isExcessBaggageAvailable) {
-        Flight flight = new Flight(airlineName, sourceCity, destCity, price, flightDuration, isMealAvailable, isExcessBaggageAvailable);
+        String id = UUID.randomUUID().toString();
+        Flight flight = new Flight(id, airlineName, sourceCity, destCity, price, flightDuration, isMealAvailable, isExcessBaggageAvailable);
         flightDao.registerFlight(flight);
         System.out.println(airlineName + " " + sourceCity + " -> " + destCity + " flight registered.");
     }
@@ -71,4 +73,6 @@ public class FlightService {
 //                    source + " -> " + dest);
 //        });
     }
+
+
 }

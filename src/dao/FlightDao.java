@@ -11,13 +11,10 @@ public class FlightDao {
 
     private static FlightDao flightDao = null;
     private List<Flight> flights;
-    private Map<String, Integer> pathWithHops;
-    private Map<String, Integer> pathWithCost;
     private Map<String, List<Flight>> flightsByAirline;
 
     public FlightDao() {
-        this.pathWithCost = new HashMap<>();
-        this.pathWithHops = new HashMap<>();
+
         this.flights = new ArrayList<>();
         this.flightsByAirline = new HashMap<>();
     }
@@ -30,20 +27,14 @@ public class FlightDao {
 
 
     public void registerFlight(Flight flight) {
-        String flightCode = flight.getAirlineName().toUpperCase() + flight.getSourceCity().toUpperCase()
-                + flight.getDestCity().toUpperCase();
-        if (pathWithHops.containsKey(flightCode) && pathWithHops.get(flightCode) == 1) {
-            System.out.println("Error:- " + flight.getAirlineName() + " " + flight.getSourceCity()
-                    + " -> " + flight.getDestCity() + " already registered.");
-        }
+
         flights.add(flight);
         List<Flight> flightList = new ArrayList<>();
         if (flightsByAirline.containsKey(flight.getAirlineName()))
             flightList = flightsByAirline.get(flight.getAirlineName());
         flightList.add(flight);
         flightsByAirline.put(flight.getAirlineName(), flightList);
-        pathWithHops.put(flightCode, 1);
-        pathWithCost.put(flightCode, flight.getPrice());
+        
     }
 
     public List<Flight> getFlightByAirline(String airlineName) {
@@ -56,5 +47,9 @@ public class FlightDao {
 
     public Map<String, List<Flight>> getAllFlights() {
         return flightsByAirline;
+    }
+
+    public List<Flight> getFlights() {
+        return flights;
     }
 }

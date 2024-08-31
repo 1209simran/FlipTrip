@@ -71,9 +71,9 @@ public class FlightService {
             System.out.println("No flights found from " + source + " -> " + dest);
             return;
         }
-        flightList.forEach(flight -> {
-            System.out.println("Found flight " + flight.getAirlineName() + " " +
-                    flight.getSourceCity() + " -> " + flight.getDestCity());
-        });
+//        flightList.forEach(flight -> {
+//            System.out.println("Found flight from " +
+//                    source + " -> " + dest);
+//        });
     }
 }
